@@ -1,0 +1,49 @@
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+@import 'fonts.scss';
+
+$app-primary: mat.define-palette(mat.$light-green-palette);
+$app-accent: mat.define-palette(mat.$light-green-palette);
+$app-warn: mat.define-palette(mat.$light-green-palette);
+
+$custom-typography: mat.define-typography-config($font-family: 'Fredoka');
+@include mat.typography-hierarchy($custom-typography);
+
+$app-theme: mat.define-light-theme((
+        color: (
+                theme-type: light,
+                primary: $app-primary,
+                accent: $app-accent,
+                warn: $app-warn,
+        ),
+        typography: $custom-typography,
+        density: (
+                scale: -1
+        )
+));
+
+html .app-theme {
+  @include mat.all-component-themes($app-theme);
+
+  .nav-bar {
+    width: 230px;
+
+    .mat-expansion-panel {
+      .mat-expansion-panel-header {
+        padding: 0 16px 0 0;
+      }
+
+      .mat-expansion-panel-content {
+        .mat-expansion-panel-body {
+          padding: 0 16px 0 16px;
+
+          .mdc-list {
+            padding: 0;
+          }
+        }
+      }
+    }
+  }
+}
