@@ -11,15 +11,15 @@
                         <mat-label>Question</mat-label>
                         <input matInput type="text" formControlName="question">
                         @if (demoForm.get('question')?.value) {
-                            <button matSuffix mat-icon-button (click)="search($event)">
+                            <button matSuffix mat-icon-button (click)="search()">
                                 <mat-icon>search</mat-icon>
                             </button>
                         }
                     </mat-form-field>
 
                     <div class="response w-full">
+                        <h3>{{ generalSummary }}</h3>
                         @for (item of (briefSummaries | async); track item) {
-
                             <mat-list class="example-list-wrapping">
                                 <mat-list-item lines="3">
                                     <span matListItemTitle><a [href]="item.link" target="_blank">{{ item.title }}</a></span>

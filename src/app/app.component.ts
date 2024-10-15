@@ -1,9 +1,8 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
-import {catchError, EMPTY, first, map, Observable, of, Subject, tap} from "rxjs";
+import {RouterLink, RouterOutlet} from '@angular/router';
+import {catchError, map, Observable, of, Subject} from "rxjs";
 import {BreakpointObserver} from "@angular/cdk/layout";
 import {AsyncPipe, CommonModule} from "@angular/common";
-import {Title} from "@angular/platform-browser";
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatFormFieldModule, MatLabel} from "@angular/material/form-field";
 import {MatIconModule} from "@angular/material/icon";
@@ -46,9 +45,6 @@ export class AppComponent implements OnInit, OnDestroy {
 
     constructor(
         private breakpointObserver: BreakpointObserver,
-        private router: Router,
-        private activatedRoute: ActivatedRoute,
-        private titleService: Title,
         private formBuilder: FormBuilder,
         private answerService: AnswerService
     ) {}
@@ -68,7 +64,7 @@ export class AppComponent implements OnInit, OnDestroy {
         });
     }
 
-    public search(event: any): void {
+    public search(): void {
         this.briefSummaries = this.answerService.getAnswer(this.demoForm.get('question')?.value)
             .pipe(
                 map(response => response.briefSummaries),
