@@ -1,6 +1,6 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {RouterLink, RouterOutlet} from '@angular/router';
-import {catchError, map, Observable, of, Subject} from "rxjs";
+import {map, Observable, of, Subject} from "rxjs";
 import {BreakpointObserver} from "@angular/cdk/layout";
 import {AsyncPipe, CommonModule} from "@angular/common";
 import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
@@ -12,6 +12,7 @@ import {AnswerService} from "../services/answer.service";
 import {BriefSummary} from "../models/brief-summary";
 import {Source} from "../models/source";
 import {MatListModule} from "@angular/material/list";
+import {MatCardModule} from "@angular/material/card";
 
 @Component({
     selector: 'app-root',
@@ -31,17 +32,22 @@ import {MatListModule} from "@angular/material/list";
         MatInputModule,
         MatLabel,
         MatButtonModule,
-        MatListModule
+        MatListModule,
+        MatCardModule,
     ],
     providers: []
 })
 export class AppComponent implements OnInit, OnDestroy {
 
+    @ViewChild('generalSummaryContent', { static: false }) generalSummaryContent: ElementRef;
+
     private readonly _destroying$ = new Subject<void>();
     public demoForm: FormGroup;
     public generalSummary: string;
     public briefSummaries: Observable<BriefSummary[]>;
-    public sources: Observable<Source[]>
+    public sources: Observable<Source[]>;
+    public showAnswer: boolean = false;
+    public showMoreBtn: boolean = true;
 
     constructor(
         private breakpointObserver: BreakpointObserver,
@@ -65,11 +71,29 @@ export class AppComponent implements OnInit, OnDestroy {
     }
 
     public search(): void {
-        this.briefSummaries = this.answerService.getAnswer(this.demoForm.get('question')?.value)
-            .pipe(
-                map(response => response.briefSummaries),
-                catchError(() => of([]))
-            );
+        this.briefSummaries = of([]);
+        this.sources = of([]);
+
+        this.answerService.getAnswer(this.demoForm.get('question')?.value)
+            .pipe()
+            .subscribe(response => {
+                this.generalSummary = response.generalSummary;
+                this.briefSummaries = of(response.briefSummaries);
+                this.sources = of(response.sources);
+                this.showAnswer = true;
+
+                if (this.generalSummaryContent) {
+                    this.showMoreBtn = true;
+                    this.generalSummaryContent.nativeElement.style.setProperty('-webkit-line-clamp', '2');
+                }
+            });
+    }
+
+    public showMore() {
+        if (this.generalSummaryContent) {
+            this.showMoreBtn = false;
+            this.generalSummaryContent.nativeElement.style.setProperty('-webkit-line-clamp', 'initial');
+        }
     }
 
     /**

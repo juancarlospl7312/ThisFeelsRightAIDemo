@@ -30,3 +30,21 @@
 .title {
   margin-bottom: 20px;
 }
+
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  line-height: 22px;
+  font-size: 14px;
+  font-weight: 400;
+  font-family: 'Fredoka';
+}
+
+.general-summary {
+  border: none;
+  box-shadow: none;
+  border-bottom: 1px solid green;
+  border-radius: 0;
+}

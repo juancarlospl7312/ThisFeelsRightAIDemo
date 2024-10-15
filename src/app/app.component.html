@@ -1,7 +1,7 @@
 <div class="wrapper">
     <div class="app-theme">
         <div class="title">
-            <mat-label>This Feels Right AI Demo.</mat-label>
+            <h2>This Feels Right AI Demo.</h2>
         </div>
 
         <div class="container">
@@ -17,18 +17,29 @@
                         }
                     </mat-form-field>
 
-                    <div class="response w-full">
-                        <h3>{{ generalSummary }}</h3>
-                        @for (item of (briefSummaries | async); track item) {
-                            <mat-list class="example-list-wrapping">
-                                <mat-list-item lines="3">
-                                    <span matListItemTitle><a [href]="item.link" target="_blank">{{ item.title }}</a></span>
-                                    {{ item.summary }}
-                                </mat-list-item>
-                            </mat-list>
+                    <div class="answer w-full">
+                        @if (showAnswer) {
+                            <mat-card class="general-summary">
+                                <mat-card-content #generalSummaryContent class="line-clamp">
+                                    {{ generalSummary }}
+                                </mat-card-content>
+                                @if (showMoreBtn) {
+                                    <mat-card-actions align="end">
+                                        <button mat-button (click)="showMore()">Show More</button>
+                                    </mat-card-actions>
+                                }
+                            </mat-card>
+
+                            @for (item of (briefSummaries | async); track item) {
+                                <mat-list class="example-list-wrapping">
+                                    <mat-list-item lines="3">
+                                        <span matListItemTitle><a [href]="item.link" target="_blank">{{ item.title }}</a></span>
+                                        {{ item.summary }}
+                                    </mat-list-item>
+                                </mat-list>
+                            }
                         }
                     </div>
-
                 </form>
             </div>
         </div>
