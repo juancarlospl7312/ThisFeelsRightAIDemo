@@ -1,5 +1,36 @@
 <div class="wrapper">
     <div class="app-theme">
-        This Feels Right AI Demo.
+        <div class="title">
+            <mat-label>This Feels Right AI Demo.</mat-label>
+        </div>
+
+        <div class="container">
+            <div class="main-content">
+                <form [formGroup]="demoForm" action="javascript:void(0)">
+                    <mat-form-field class="question w-full">
+                        <mat-label>Question</mat-label>
+                        <input matInput type="text" formControlName="question">
+                        @if (demoForm.get('question')?.value) {
+                            <button matSuffix mat-icon-button (click)="search($event)">
+                                <mat-icon>search</mat-icon>
+                            </button>
+                        }
+                    </mat-form-field>
+
+                    <div class="response w-full">
+                        @for (item of (briefSummaries | async); track item) {
+
+                            <mat-list class="example-list-wrapping">
+                                <mat-list-item lines="3">
+                                    <span matListItemTitle><a [href]="item.link" target="_blank">{{ item.title }}</a></span>
+                                    {{ item.summary }}
+                                </mat-list-item>
+                            </mat-list>
+                        }
+                    </div>
+
+                </form>
+            </div>
+        </div>
     </div>
 </div>

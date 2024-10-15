@@ -1,9 +1,18 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {ActivatedRoute, ActivatedRouteSnapshot, NavigationEnd, Router, RouterLink, RouterOutlet} from '@angular/router';
-import {BehaviorSubject, combineLatest, filter, map, Observable, shareReplay, Subject} from "rxjs";
+import {ActivatedRoute, Router, RouterLink, RouterOutlet} from '@angular/router';
+import {catchError, EMPTY, first, map, Observable, of, Subject, tap} from "rxjs";
 import {BreakpointObserver} from "@angular/cdk/layout";
 import {AsyncPipe, CommonModule} from "@angular/common";
 import {Title} from "@angular/platform-browser";
+import {FormBuilder, FormControl, FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {MatFormFieldModule, MatLabel} from "@angular/material/form-field";
+import {MatIconModule} from "@angular/material/icon";
+import {MatInputModule} from "@angular/material/input";
+import {MatButtonModule} from "@angular/material/button";
+import {AnswerService} from "../services/answer.service";
+import {BriefSummary} from "../models/brief-summary";
+import {Source} from "../models/source";
+import {MatListModule} from "@angular/material/list";
 
 @Component({
     selector: 'app-root',
@@ -14,35 +23,57 @@ import {Title} from "@angular/platform-browser";
     imports: [
         RouterOutlet,
         CommonModule,
+        FormsModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
         AsyncPipe,
         RouterLink,
+        MatIconModule,
+        MatInputModule,
+        MatLabel,
+        MatButtonModule,
+        MatListModule
     ],
-
+    providers: []
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-    public isProcessing: boolean = false;
     private readonly _destroying$ = new Subject<void>();
-
-    /**
-     * Stores value indicating is the user has intentionally opened the nav bar
-     */
-    private _userOpenedNavBar = new BehaviorSubject<boolean>(false);
+    public demoForm: FormGroup;
+    public generalSummary: string;
+    public briefSummaries: Observable<BriefSummary[]>;
+    public sources: Observable<Source[]>
 
     constructor(
         private breakpointObserver: BreakpointObserver,
         private router: Router,
         private activatedRoute: ActivatedRoute,
-        private titleService: Title
+        private titleService: Title,
+        private formBuilder: FormBuilder,
+        private answerService: AnswerService
     ) {}
+
+    ngOnInit(): void {
+        this.initializeForm();
+    }
 
     ngOnDestroy(): void {
         this._destroying$.next(undefined);
         this._destroying$.complete();
     }
 
-    ngOnInit(): void {
+    public initializeForm() {
+        this.demoForm = this.formBuilder.group({
+            question: new FormControl<string | null>(null, {})
+        });
+    }
 
+    public search(event: any): void {
+        this.briefSummaries = this.answerService.getAnswer(this.demoForm.get('question')?.value)
+            .pipe(
+                map(response => response.briefSummaries),
+                catchError(() => of([]))
+            );
     }
 
     /**
