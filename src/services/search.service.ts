@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { catchError, map } from "rxjs/operators";
-import {environment} from "../environments/environment";
+import {environment as env} from "../environments/environment";
 
 // Interfaces to define the expected Google Search API response
 interface GoogleSearchResult {
@@ -20,15 +20,13 @@ interface GoogleSearchResponse {
 })
 export class SearchService {
 
-  // ScraperAPI key
-  private scraperApiKey = "6d599e976d6915f50dff4f9f4f9103d0";
 
   constructor(private http: HttpClient) {}
 
   searchWithGoogle(query: string): Observable<GoogleSearchResult[]> {
-    const url = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(
+    const url = `${env.googleApiURl}?q=${encodeURIComponent(
       query
-    )}&key=${environment.googleApiKey}&cx=${environment.cseId}`;
+    )}&key=${env.googleApiKey}&cx=${env.cseId}`;
 
     return this.http.get<GoogleSearchResponse>(url).pipe(
       map((response) => response.items || []),
@@ -40,8 +38,8 @@ export class SearchService {
   }
 
   fetchPageContent(link: string): Observable<string> {
-    const scraperApiUrl = `http://api.scraperapi.com?api_key=${
-      this.scraperApiKey
+    const scraperApiUrl = `${env.scraperApiUrl}?api_key=${
+      env.scraperApiKey
     }&url=${encodeURIComponent(link)}`;
 
     return this.http.get(scraperApiUrl, { responseType: "text" }).pipe(
