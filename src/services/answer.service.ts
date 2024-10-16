@@ -1,28 +1,75 @@
-import { Injectable } from '@angular/core';
-import {catchError, map, Observable, of, tap} from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import * as responseData from '../assets/files/demo_response.json';
+import { Injectable } from "@angular/core";
+import { Observable, of, forkJoin } from "rxjs";
+import { map, catchError, switchMap } from "rxjs/operators";
+import { SearchService } from "./search.service";
+import { OpenAIService } from "./openAI.service";
+import { BriefSummary } from "../models/brief-summary";
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: "root",
 })
 export class AnswerService {
+  constructor(
+    private searchService: SearchService,
+    private openAIService: OpenAIService
+  ) {}
 
-    constructor(
-        private http: HttpClient,
-    ) { }
+  processRequest(
+    message: string,
+    returnSources: boolean = true
+  ): Observable<any> {
+    return this.searchService.searchWithGoogle(message).pipe(
+      switchMap((sources) => {
+        if (sources.length === 0) {
+          return of({
+            status: 404,
+            body: { error: "No relevant sources found." },
+          });
+        }
 
-    /**
-     * Gets a list of incident areas
-     * @returns
-     */
-    public getAnswer(question: any): Observable<any> {
-        return of(responseData)
-            .pipe(
-                catchError(error => {
-                    return [];
-                })
+        const processedSources$ = sources.map(({ title, link }) =>
+          this.searchService.fetchPageContent(link).pipe(
+            switchMap((htmlContent) => {
+              if (!htmlContent || htmlContent.length < 250) return of(null);
+              return of({ title, link, content: htmlContent });
+            })
+          )
+        );
+
+        return forkJoin(processedSources$).pipe(
+          map((processedSources) => processedSources.filter(Boolean)),
+          switchMap((validSources: any[]) => {
+            const summaryRequests$ = validSources.map((source) =>
+              this.openAIService.generateIndividualSummary(source.content).pipe(
+                map((summary) => ({
+                  title: source.title,
+                  link: source.link,
+                  summary,
+                }))
+              )
             );
-    }
 
+            return forkJoin(summaryRequests$).pipe(
+              switchMap((briefSummaries: BriefSummary[]) =>
+                this.openAIService.generateGeneralSummary(briefSummaries).pipe(
+                  map((generalSummary) => {
+                    const responseObj: any = {
+                      generalSummary,
+                      briefSummaries,
+                    };
+                    if (returnSources) responseObj.sources = sources;
+                    return { status: 200, body: responseObj };
+                  })
+                )
+              )
+            );
+          })
+        );
+      }),
+      catchError((error) => {
+        console.error("Error in processRequest:", error);
+        return of({ status: 500, body: { error: "Something went wrong." } });
+      })
+    );
+  }
 }
