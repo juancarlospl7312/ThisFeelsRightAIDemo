@@ -22,8 +22,6 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { AnswerService } from "../services/answer.service";
-import { BriefSummary } from "../models/brief-summary";
-import { Source } from "../models/source";
 import { MatListModule } from "@angular/material/list";
 import { MatCardModule } from "@angular/material/card";
 import { catchError } from "rxjs/operators";
@@ -57,8 +55,8 @@ export class AppComponent implements OnInit, OnDestroy {
   private readonly _destroying$ = new Subject<void>();
   public demoForm: FormGroup;
   public generalSummary: string = "";
-  public briefSummaries: Observable<BriefSummary[]> = of([]);
-  public sources: Observable<Source[]> = of([]);
+  public briefSummaries: Observable<any[]> = of([]);
+  public sources: Observable<any[]> = of([]);
   public showAnswer: boolean = false;
   public showMoreBtn: boolean = true;
 
@@ -104,11 +102,11 @@ export class AppComponent implements OnInit, OnDestroy {
         })
       )
       .subscribe((response) => {
-        const { generalSummary, briefSummaries, sources } = response.body;
+        const data = response.body;
 
-        this.generalSummary = generalSummary;
-        this.briefSummaries = of(briefSummaries);
-        this.sources = of(sources);
+        this.generalSummary = data.generalSummary;
+        this.briefSummaries = of(data.briefSummaries);
+        this.sources = of(data.sources);
         this.showAnswer = true;
 
         if (this.generalSummaryContent) {

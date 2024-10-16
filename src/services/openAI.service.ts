@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable, of } from "rxjs";
 import { map, catchError } from "rxjs/operators";
+import {environment} from "../environments/environment";
 
 interface OpenAIMessage {
   role: string;
@@ -20,15 +21,13 @@ interface OpenAIResponse {
   providedIn: "root",
 })
 export class OpenAIService {
-  private openAiApiKey = "openAiApiKey";
-  private apiUrl = "https://api.openai.com/v1/chat/completions";
 
   constructor(private http: HttpClient) {}
 
   generateIndividualSummary(content: string): Observable<string> {
     const headers = new HttpHeaders({
       "Content-Type": "application/json",
-      Authorization: `Bearer ${this.openAiApiKey}`,
+      Authorization: `Bearer ${environment.openAiApiKey}`,
     });
 
     const body = {
@@ -39,7 +38,7 @@ export class OpenAIService {
       ],
     };
 
-    return this.http.post<OpenAIResponse>(this.apiUrl, body, { headers }).pipe(
+    return this.http.post<OpenAIResponse>(environment.apiUrl, body, { headers }).pipe(
       map((response) => response.choices[0].message.content.trim()),
       catchError((error) => {
         console.error("OpenAI Error:", error);
@@ -51,7 +50,7 @@ export class OpenAIService {
   generateGeneralSummary(articles: any[]): Observable<string> {
     const headers = new HttpHeaders({
       "Content-Type": "application/json",
-      Authorization: `Bearer ${this.openAiApiKey}`,
+      Authorization: `Bearer ${environment.openAiApiKey}`,
     });
 
     const body = {
@@ -65,7 +64,7 @@ export class OpenAIService {
       ],
     };
 
-    return this.http.post<OpenAIResponse>(this.apiUrl, body, { headers }).pipe(
+    return this.http.post<OpenAIResponse>(environment.apiUrl, body, { headers }).pipe(
       map((response) => response.choices[0].message.content.trim()),
       catchError((error) => {
         console.error("OpenAI Error:", error);

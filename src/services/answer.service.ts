@@ -3,7 +3,6 @@ import { Observable, of, forkJoin } from "rxjs";
 import { map, catchError, switchMap } from "rxjs/operators";
 import { SearchService } from "./search.service";
 import { OpenAIService } from "./openAI.service";
-import { BriefSummary } from "../models/brief-summary";
 
 @Injectable({
   providedIn: "root",
@@ -50,7 +49,7 @@ export class AnswerService {
             );
 
             return forkJoin(summaryRequests$).pipe(
-              switchMap((briefSummaries: BriefSummary[]) =>
+              switchMap((briefSummaries: any[]) =>
                 this.openAIService.generateGeneralSummary(briefSummaries).pipe(
                   map((generalSummary) => {
                     const responseObj: any = {
