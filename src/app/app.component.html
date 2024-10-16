@@ -15,6 +15,9 @@
                                 <mat-icon>search</mat-icon>
                             </button>
                         }
+                        @if (proccesing) {
+                            <mat-progress-bar class="processing" mode="indeterminate"></mat-progress-bar>
+                        }
                     </mat-form-field>
 
                     <div class="answer w-full">
@@ -30,11 +33,11 @@
                                 }
                             </mat-card>
 
-                            @for (item of (briefSummaries | async); track item) {
+                            @for (item of (sources$ | async); track item) {
                                 <mat-list class="example-list-wrapping">
                                     <mat-list-item lines="3">
                                         <span matListItemTitle><a [href]="item.link" target="_blank">{{ item.title }}</a></span>
-                                        {{ item.summary }}
+                                        {{ item.snippet }}
                                     </mat-list-item>
                                 </mat-list>
                             }

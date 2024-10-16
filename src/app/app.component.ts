@@ -25,6 +25,7 @@ import { AnswerService } from "../services/answer.service";
 import { MatListModule } from "@angular/material/list";
 import { MatCardModule } from "@angular/material/card";
 import { catchError } from "rxjs/operators";
+import {MatProgressBarModule} from "@angular/material/progress-bar";
 
 @Component({
   selector: "app-root",
@@ -46,6 +47,7 @@ import { catchError } from "rxjs/operators";
     MatButtonModule,
     MatListModule,
     MatCardModule,
+    MatProgressBarModule
   ],
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -55,10 +57,11 @@ export class AppComponent implements OnInit, OnDestroy {
   private readonly _destroying$ = new Subject<void>();
   public demoForm: FormGroup;
   public generalSummary: string = "";
-  public briefSummaries: Observable<any[]> = of([]);
-  public sources: Observable<any[]> = of([]);
+  public briefSummaries$: Observable<any[]> = of([]);
+  public sources$: Observable<any[]> = of([]);
   public showAnswer: boolean = false;
   public showMoreBtn: boolean = true;
+  public proccesing: boolean = false;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -85,8 +88,9 @@ export class AppComponent implements OnInit, OnDestroy {
     const question = this.demoForm.get("question")?.value;
     if (!question) return;
 
-    this.briefSummaries = of([]);
-    this.sources = of([]);
+    this.proccesing = true;
+    this.briefSummaries$ = of([]);
+    this.sources$ = of([]);
     this.showAnswer = false;
 
     this.answerService
@@ -103,11 +107,12 @@ export class AppComponent implements OnInit, OnDestroy {
       )
       .subscribe((response) => {
         const data = response.body;
-
+console.log(data);
         this.generalSummary = data.generalSummary;
-        this.briefSummaries = of(data.briefSummaries);
-        this.sources = of(data.sources);
+        this.briefSummaries$ = of(data.briefSummaries);
+        this.sources$ = of(data.sources);
         this.showAnswer = true;
+        this.proccesing = false;
 
         if (this.generalSummaryContent) {
           this.showMoreBtn = true;

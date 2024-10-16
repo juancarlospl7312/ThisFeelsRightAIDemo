@@ -46,4 +46,10 @@ html .app-theme {
       }
     }
   }
+
+  .mat-mdc-form-field-infix {
+    padding-bottom: 0 !important;
+    border: none;
+  }
+
 }
