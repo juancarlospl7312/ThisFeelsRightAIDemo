@@ -61,7 +61,7 @@ export class AppComponent implements OnInit, OnDestroy {
   public sources$: Observable<any[]> = of([]);
   public showAnswer: boolean = false;
   public showMoreBtn: boolean = true;
-  public proccesing: boolean = false;
+  public proccessing: boolean = false;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -88,7 +88,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const question = this.demoForm.get("question")?.value;
     if (!question) return;
 
-    this.proccesing = true;
+    this.proccessing = true;
     this.briefSummaries$ = of([]);
     this.sources$ = of([]);
     this.showAnswer = false;
@@ -112,7 +112,7 @@ console.log(data);
         this.briefSummaries$ = of(data.briefSummaries);
         this.sources$ = of(data.sources);
         this.showAnswer = true;
-        this.proccesing = false;
+        this.proccessing = false;
 
         if (this.generalSummaryContent) {
           this.showMoreBtn = true;
