@@ -25,7 +25,9 @@
                             @if ((generalSummary) !== '') {
                                 <mat-card class="general-summary">
                                     <mat-card-content #generalSummaryContent class="line-clamp">
-                                        {{ generalSummary }}
+                                        <markdown emoji>
+                                            {{ generalSummary }}
+                                        </markdown>
                                     </mat-card-content>
                                     @if (showMoreBtn && generalSummary !== '') {
                                         <mat-card-actions align="end">

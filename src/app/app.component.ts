@@ -26,6 +26,7 @@ import { MatListModule } from "@angular/material/list";
 import { MatCardModule } from "@angular/material/card";
 import { catchError } from "rxjs/operators";
 import {MatProgressBarModule} from "@angular/material/progress-bar";
+import {MarkdownComponent} from "ngx-markdown";
 
 @Component({
   selector: "app-root",
@@ -47,7 +48,8 @@ import {MatProgressBarModule} from "@angular/material/progress-bar";
     MatButtonModule,
     MatListModule,
     MatCardModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MarkdownComponent
   ],
 })
 export class AppComponent implements OnInit, OnDestroy {
