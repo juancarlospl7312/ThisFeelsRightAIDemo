@@ -22,12 +22,12 @@
 
                     <div class="answer w-full">
                         @if (showAnswer) {
-                            @if ((generalSummary | async) !== '') {
+                            @if ((generalSummary) !== '') {
                                 <mat-card class="general-summary">
                                     <mat-card-content #generalSummaryContent class="line-clamp">
                                         {{ generalSummary }}
                                     </mat-card-content>
-                                    @if (showMoreBtn) {
+                                    @if (showMoreBtn && generalSummary !== '') {
                                         <mat-card-actions align="end">
                                             <button mat-button (click)="showMore()">Show More</button>
                                         </mat-card-actions>

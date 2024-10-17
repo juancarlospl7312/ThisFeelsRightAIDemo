@@ -56,7 +56,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private readonly _destroying$ = new Subject<void>();
   public demoForm: FormGroup;
-  public generalSummary: Observable<string>;
+  public generalSummary: string;
   public briefSummaries$: Observable<any[]>;
   public sources$: Observable<any[]>;
   public showAnswer: boolean = false;
@@ -107,14 +107,14 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((response) => {
         const data = response.body;
         console.log(data);
-        this.generalSummary = of(data.generalSummary);
+        this.generalSummary = data.generalSummary;
         this.briefSummaries$ = of(data.briefSummaries);
         this.sources$ = of(data.sources);
         this.showAnswer = true;
         this.loading = false;
+        this.showMoreBtn = true;
 
         if (this.generalSummaryContent) {
-          this.showMoreBtn = true;
           this.generalSummaryContent.nativeElement.style.setProperty(
             "-webkit-line-clamp",
             "2"

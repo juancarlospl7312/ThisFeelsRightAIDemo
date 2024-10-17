@@ -10,6 +10,6 @@ export const environment = {
     scraperApiKey: "6d599e976d6915f50dff4f9f4f9103d0",
     scraperApiUrl: "https://api.scraperapi.com",
     // OpenAI API key
-    openAiApiKey: "sk-KaSUF4OqVxoYhVNGIXBnV8bN6yDUF8UCBpWJvjQiW9T3BlbkFJmerPocPEPJz4IiGPRR8AqlLAwiR7EblwE6l-kDSnkA",
+    openAiApiKey: "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",
     apiUrl: "https://api.openai.com/v1/chat/completions",
 }
