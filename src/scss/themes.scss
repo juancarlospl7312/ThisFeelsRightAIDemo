@@ -43,4 +43,12 @@ html .app-theme {
     color:  rgba(0, 0, 0, 0.6) !important;
   }
 
+  .mdc-list-item__secondary-text {
+    text-wrap: wrap;
+  }
+
+  .mdc-list-item.mdc-list-item--with-two-lines {
+    height: fit-content;
+  }
+
 }
