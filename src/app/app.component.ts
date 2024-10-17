@@ -90,9 +90,6 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!question) return;
 
     this.loading = true;
-    this.generalSummary = of('');
-    this.briefSummaries$ = of([]);
-    this.sources$ = of([]);
     this.showAnswer = false;
 
     this.answerService
