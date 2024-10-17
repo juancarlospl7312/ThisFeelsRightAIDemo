@@ -24,9 +24,9 @@ export class SearchService {
   constructor(private http: HttpClient) {}
 
   searchWithGoogle(query: string): Observable<GoogleSearchResult[]> {
-    const url = `${env.GOOGLEAPIURL}?q=${encodeURIComponent(
+    const url = `${env.GOOGLE_API_URL}?q=${encodeURIComponent(
       query
-    )}&key=${env.GOOGLEAPIKEY}&cx=${env.CSEID}`;
+    )}&key=${env.GOOGLE_API_KEY}&cx=${env.CSE_ID}`;
 
     return this.http.get<GoogleSearchResponse>(url).pipe(
       map((response) => response.items || []),
@@ -38,8 +38,8 @@ export class SearchService {
   }
 
   fetchPageContent(link: string): Observable<string> {
-    const scraperApiUrl = `${env.SCRAPERAPIURL}?api_key=${
-      env.SCRAPERAPIKEY
+    const scraperApiUrl = `${env.SCRAPER_API_URL}?api_key=${
+      env.SCRAPER_API_KEY
     }&url=${encodeURIComponent(link)}`;
 
     return this.http.get(scraperApiUrl, { responseType: "text" }).pipe(
