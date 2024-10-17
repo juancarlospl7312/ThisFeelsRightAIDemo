@@ -27,7 +27,7 @@ export class OpenAIService {
   generateIndividualSummary(content: string): Observable<string> {
     const headers = new HttpHeaders({
       "Content-Type": "application/json",
-      Authorization: `Bearer ${environment.openAiApiKey}`,
+      Authorization: `Bearer ${environment.OPENAIAPIKEY}`,
     });
 
     const body = {
@@ -38,7 +38,7 @@ export class OpenAIService {
       ],
     };
 
-    return this.http.post<OpenAIResponse>(environment.openAiApiUrl, body, { headers }).pipe(
+    return this.http.post<OpenAIResponse>(environment.OPENAIAPIURL, body, { headers }).pipe(
       map((response) => response.choices[0].message.content.trim()),
       catchError((error) => {
         console.error("OpenAI Error:", error);
@@ -50,7 +50,7 @@ export class OpenAIService {
   generateGeneralSummary(articles: any[]): Observable<string> {
     const headers = new HttpHeaders({
       "Content-Type": "application/json",
-      Authorization: `Bearer ${environment.openAiApiKey}`,
+      Authorization: `Bearer ${environment.OPENAIAPIKEY}`,
     });
 
     const body = {
@@ -64,7 +64,7 @@ export class OpenAIService {
       ],
     };
 
-    return this.http.post<OpenAIResponse>(environment.openAiApiUrl, body, { headers }).pipe(
+    return this.http.post<OpenAIResponse>(environment.OPENAIAPIURL, body, { headers }).pipe(
       map((response) => response.choices[0].message.content.trim()),
       catchError((error) => {
         console.error("OpenAI Error:", error);

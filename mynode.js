@@ -1,0 +1,25 @@
+const fs = require('fs');
+const path = require('path');
+const successColor = '\x1b[32m%s\x1b[0m';
+const checkSign = '\u{2705}';
+const dotenv = require('dotenv').config({path: 'src/.env'});
+
+const envFile = `export const environment = {
+    GOOGLE_API_KEY: '${process.env.GOOGLE_API_KEY}',
+    CSE_ID: '${process.env.CSE_ID}',
+    GOOGLE_API_URL: '${process.env.GOOGLE_API_URL}',
+    SCRAPER_API_KEY: '${process.env.SCRAPER_API_KEY}',
+    SCRAPER_API_URL: '${process.env.SCRAPER_API_URL}',
+    OPENAI_API_KEY: '${process.env.OPENAI_API_KEY}',
+    OPENAI_API_URL: '${process.env.OPENAI_API_URL}',
+};
+`;
+const targetPath = path.join(__dirname, './src/environments/environment.prod.ts');
+fs.writeFile(targetPath, envFile, (err) => {
+    if (err) {
+        console.error(err);
+        throw err;
+    } else {
+        console.log(successColor, `${checkSign} Successfully generated environment.prod.ts`);
+    }
+});

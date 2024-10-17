@@ -1,15 +1,9 @@
 export const environment = {
-    production: false,
-    environmentName: "ThisFeelsRightAIDemo",
-
-    // Hardcoded API keys (replace these with real values)
-    googleApiKey: process.env.googleApiKey,
-    cseId: process.env.cseId,
-    googleApiURl: "https://www.googleapis.com/customsearch/v1",
-    // Scraper API key
-    scraperApiKey: process.env.scraperApiKey,
-    scraperApiUrl: "https://api.scraperapi.com",
-    // OpenAI API key
-    openAiApiKey: process.env.openAiApiKey,
-    apiUrl: "https://api.openai.com/v1/chat/completions",
+    GOOGLE_API_KEY: "",
+    CSE_ID: "",
+    GOOGLE_API_URL: "",
+    SCRAPER_API_KEY: "",
+    SCRAPER_API_URL: "",
+    OPENAI_API_KEY: "",
+    OPENAI_API_URL: "",
 }
