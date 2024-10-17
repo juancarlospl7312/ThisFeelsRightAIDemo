@@ -1,5 +1,5 @@
 import {
-  ChangeDetectionStrategy,
+  ChangeDetectionStrategy, ChangeDetectorRef,
   Component,
   ElementRef,
   OnDestroy,
@@ -61,12 +61,13 @@ export class AppComponent implements OnInit, OnDestroy {
   public sources$: Observable<any[]> = of([]);
   public showAnswer: boolean = false;
   public showMoreBtn: boolean = true;
-  public proccessing: boolean = false;
+  public loading: boolean = false;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
     private formBuilder: FormBuilder,
-    private answerService: AnswerService
+    private answerService: AnswerService,
+    private cd: ChangeDetectorRef,
   ) {}
 
   ngOnInit(): void {
@@ -88,7 +89,7 @@ export class AppComponent implements OnInit, OnDestroy {
     const question = this.demoForm.get("question")?.value;
     if (!question) return;
 
-    this.proccessing = true;
+    this.loading = true;
     this.briefSummaries$ = of([]);
     this.sources$ = of([]);
     this.showAnswer = false;
@@ -112,7 +113,7 @@ export class AppComponent implements OnInit, OnDestroy {
         this.briefSummaries$ = of(data.briefSummaries);
         this.sources$ = of(data.sources);
         this.showAnswer = true;
-        this.proccessing = false;
+        this.loading = false;
 
         if (this.generalSummaryContent) {
           this.showMoreBtn = true;
@@ -121,6 +122,8 @@ export class AppComponent implements OnInit, OnDestroy {
             "2"
           );
         }
+
+        this.cd.detectChanges();
       });
   }
 
