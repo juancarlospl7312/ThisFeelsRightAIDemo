@@ -22,7 +22,7 @@
 
                     <div class="answer w-full">
                         @if (showAnswer) {
-                            @if (generalSummary !== '') {
+                            @if ((generalSummary | async) !== '') {
                                 <mat-card class="general-summary">
                                     <mat-card-content #generalSummaryContent class="line-clamp">
                                         {{ generalSummary }}

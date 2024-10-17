@@ -56,9 +56,9 @@ export class AppComponent implements OnInit, OnDestroy {
 
   private readonly _destroying$ = new Subject<void>();
   public demoForm: FormGroup;
-  public generalSummary: string = "";
-  public briefSummaries$: Observable<any[]> = of([]);
-  public sources$: Observable<any[]> = of([]);
+  public generalSummary: Observable<string>;
+  public briefSummaries$: Observable<any[]>;
+  public sources$: Observable<any[]>;
   public showAnswer: boolean = false;
   public showMoreBtn: boolean = true;
   public loading: boolean = false;
@@ -90,6 +90,7 @@ export class AppComponent implements OnInit, OnDestroy {
     if (!question) return;
 
     this.loading = true;
+    this.generalSummary = of('');
     this.briefSummaries$ = of([]);
     this.sources$ = of([]);
     this.showAnswer = false;
@@ -109,7 +110,7 @@ export class AppComponent implements OnInit, OnDestroy {
       .subscribe((response) => {
         const data = response.body;
         console.log(data);
-        this.generalSummary = data.generalSummary;
+        this.generalSummary = of(data.generalSummary);
         this.briefSummaries$ = of(data.briefSummaries);
         this.sources$ = of(data.sources);
         this.showAnswer = true;
