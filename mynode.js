@@ -7,11 +7,8 @@ const dotenv = require('dotenv').config({path: 'src/.env'});
 const envFile = `export const environment = {
     GOOGLE_API_KEY: '${process.env.GOOGLE_API_KEY}',
     CSE_ID: '${process.env.CSE_ID}',
-    GOOGLE_API_URL: '${process.env.GOOGLE_API_URL}',
     SCRAPER_API_KEY: '${process.env.SCRAPER_API_KEY}',
-    SCRAPER_API_URL: '${process.env.SCRAPER_API_URL}',
     OPENAI_API_KEY: '${process.env.OPENAI_API_KEY}',
-    OPENAI_API_URL: '${process.env.OPENAI_API_URL}',
 };
 `;
 const targetPath = path.join(__dirname, './src/environments/environment.prod.ts');

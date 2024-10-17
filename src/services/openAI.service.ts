@@ -38,7 +38,7 @@ export class OpenAIService {
       ],
     };
 
-    return this.http.post<OpenAIResponse>(environment.OPENAI_API_URL, body, { headers }).pipe(
+    return this.http.post<OpenAIResponse>("https://api.openai.com/v1/chat/completions", body, { headers }).pipe(
       map((response) => response.choices[0].message.content.trim()),
       catchError((error) => {
         console.error("OpenAI Error:", error);
@@ -64,7 +64,7 @@ export class OpenAIService {
       ],
     };
 
-    return this.http.post<OpenAIResponse>(environment.OPENAI_API_URL, body, { headers }).pipe(
+    return this.http.post<OpenAIResponse>("https://api.openai.com/v1/chat/completions", body, { headers }).pipe(
       map((response) => response.choices[0].message.content.trim()),
       catchError((error) => {
         console.error("OpenAI Error:", error);
