@@ -107,7 +107,6 @@ export class AppComponent implements OnInit, OnDestroy {
       )
       .subscribe((response) => {
         const data = response.body;
-console.log(data);
         this.generalSummary = data.generalSummary;
         this.briefSummaries$ = of(data.briefSummaries);
         this.sources$ = of(data.sources);

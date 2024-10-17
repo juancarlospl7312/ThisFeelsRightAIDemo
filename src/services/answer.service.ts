@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { Observable, of, forkJoin } from "rxjs";
+import {Observable, of, forkJoin, delay} from "rxjs";
 import { map, catchError, switchMap } from "rxjs/operators";
 import { SearchService } from "./search.service";
 import { OpenAIService } from "./openAI.service";
@@ -27,12 +27,15 @@ export class AnswerService {
         }
 
         const processedSources$ = sources.map(({ title, link }) =>
-          this.searchService.fetchPageContent(link).pipe(
-            switchMap((htmlContent) => {
-              if (!htmlContent || htmlContent.length < 250) return of(null);
-              return of({ title, link, content: htmlContent });
-            })
-          )
+            {
+                delay(2000);
+                return this.searchService.fetchPageContent(link).pipe(
+                    switchMap((htmlContent) => {
+                        if (!htmlContent || htmlContent.length < 250) return of(null);
+                        return of({ title, link, content: htmlContent });
+                    })
+                )
+            }
         );
 
         return forkJoin(processedSources$).pipe(

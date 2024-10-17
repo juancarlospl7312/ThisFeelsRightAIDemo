@@ -21,21 +21,23 @@
                     </mat-form-field>
 
                     <div class="answer w-full">
-                        @if (showAnswer && generalSummary !== '') {
-                            <mat-card class="general-summary">
-                                <mat-card-content #generalSummaryContent class="line-clamp">
-                                    {{ generalSummary }}
-                                </mat-card-content>
-                                @if (showMoreBtn) {
-                                    <mat-card-actions align="end">
-                                        <button mat-button (click)="showMore()">Show More</button>
-                                    </mat-card-actions>
-                                }
-                            </mat-card>
+                        @if (showAnswer) {
+                            @if (generalSummary !== '') {
+                                <mat-card class="general-summary">
+                                    <mat-card-content #generalSummaryContent class="line-clamp">
+                                        {{ generalSummary }}
+                                    </mat-card-content>
+                                    @if (showMoreBtn) {
+                                        <mat-card-actions align="end">
+                                            <button mat-button (click)="showMore()">Show More</button>
+                                        </mat-card-actions>
+                                    }
+                                </mat-card>
+                            }
 
                             @for (item of (sources$ | async); track item) {
                                 <mat-list class="example-list-wrapping">
-                                    <mat-list-item lines="3">
+                                    <mat-list-item>
                                         <span matListItemTitle><a [href]="item.link" target="_blank">{{ item.title }}</a></span>
                                         {{ item.snippet }}
                                     </mat-list-item>
