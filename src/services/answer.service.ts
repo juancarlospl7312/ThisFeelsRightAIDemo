@@ -31,6 +31,7 @@ export class AnswerService {
                 delay(10000);
                 return this.searchService.fetchPageContent(link).pipe(
                     switchMap((htmlContent) => {
+                        console.log(link);
                         if (!htmlContent || htmlContent.length < 250) return of(null);
                         return of({ title, link, content: htmlContent });
                     })
