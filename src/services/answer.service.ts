@@ -28,6 +28,7 @@ export class AnswerService {
 
         const processedSources$ = sources.map(({ title, link }) =>
             {
+                delay(3000);
                 return this.searchService.fetchPageContent(link).pipe(
                     switchMap((htmlContent) => {
                         if (!htmlContent || htmlContent.length < 250) return of(null);
