@@ -43,7 +43,7 @@
 
   .line-clamp {
     display: -webkit-box;
-    -webkit-line-clamp: 3;
+    -webkit-line-clamp: 5;
     overflow: hidden;
     -webkit-box-orient: vertical;
   }
@@ -68,8 +68,6 @@
     box-sizing: border-box;
     width: 100%;
     margin: 0;
-    overflow: auto;
-    overflow-y: hidden;
     font-size: 16px;
     line-height: 26px;
     border: none;
