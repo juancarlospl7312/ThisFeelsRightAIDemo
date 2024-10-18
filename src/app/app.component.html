@@ -24,8 +24,17 @@
                         @if (showAnswer) {
                             @if ((generalSummary) !== '') {
                                 <mat-card class="general-summary">
-                                    <mat-card-content #generalSummaryContent class="line-clamp">
-                                        {{ generalSummary }}
+                                    <mat-card-content #generalSummaryContent>
+                                        @if (showMoreBtn && generalSummary !== '') {
+                                            <p class="line-clamp">
+                                                {{ generalSummary }}
+                                            </p>
+                                        }
+                                        @if (!showMoreBtn && generalSummary !== '') {
+                                            <div class="full-content">
+                                                {{ generalSummary }}
+                                            </div>
+                                        }
                                     </mat-card-content>
                                     @if (showMoreBtn && generalSummary !== '') {
                                         <mat-card-actions align="end">

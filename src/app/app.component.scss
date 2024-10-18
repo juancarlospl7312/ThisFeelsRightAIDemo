@@ -33,7 +33,7 @@
 
 .line-clamp {
   display: -webkit-box;
-  -webkit-line-clamp: 2;
+  -webkit-line-clamp: 3;
   overflow: hidden;
   -webkit-box-orient: vertical;
   line-height: 22px;
@@ -46,6 +46,18 @@
   box-shadow: none;
   border-bottom: 1px solid green;
   border-radius: 0;
+
+  pre {
+    font-size: inherit;
+    color: inherit;
+    border: initial;
+    padding: initial;
+    font-family: inherit;
+  }
+
+  .full-content {
+    white-space: pre-line;
+  }
 }
 
 .loading {
