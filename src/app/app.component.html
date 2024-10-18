@@ -23,17 +23,13 @@
                     <div class="answer w-full">
                         @if (showAnswer) {
                             @if ((generalSummary) !== '') {
-                                <mat-card class="general-summary">
+                                <mat-card class="general-summary w-full">
                                     <mat-card-content #generalSummaryContent>
                                         @if (showMoreBtn && generalSummary !== '') {
-                                            <p class="line-clamp">
-                                                {{ generalSummary }}
-                                            </p>
+                                            <div class="line-clamp snippet">{{ generalSummary }}</div>
                                         }
                                         @if (!showMoreBtn && generalSummary !== '') {
-                                            <pre>
-                                                {{ generalSummary }}
-                                            </pre>
+                                            <pre>{{ generalSummary }}</pre>
                                         }
                                     </mat-card-content>
                                     @if (showMoreBtn && generalSummary !== '') {
@@ -44,20 +40,14 @@
                                 </mat-card>
                             }
 
-                            @for (source of (sources$ | async); track source) {
-                                <mat-list class="example-list-wrapping">
+                            <mat-list class="brief-summaries w-full">
+                                @for (item of (summaryList$ | async); track item) {
                                     <mat-list-item>
-                                        <span matListItemTitle><a [href]="source.link" target="_blank">{{ source.title }}</a></span>
-                                        @for (briefSummary of (briefSummaries$ | async); track briefSummary) {
-                                            @if (source.title === briefSummary.title) {
-                                                {{ briefSummary.summary }}
-                                            } @else {
-                                                {{ source.snippet }}
-                                            }
-                                        }
+                                        <span matListItemTitle><a [href]="item.link" target="_blank">{{ item.title }}</a></span>
+                                            {{ item.summary }}
                                     </mat-list-item>
-                                </mat-list>
-                            }
+                                }
+                            </mat-list>
                         }
                     </div>
                 </form>

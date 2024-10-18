@@ -57,11 +57,10 @@ export class AppComponent implements OnInit, OnDestroy {
   private readonly _destroying$ = new Subject<void>();
   public demoForm: FormGroup;
   public generalSummary: string;
-  public briefSummaries$: Observable<any[]>;
-  public sources$: Observable<any[]>;
   public showAnswer: boolean = false;
   public showMoreBtn: boolean = true;
   public loading: boolean = false;
+  public summaryList$: Observable<any[]>;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -108,8 +107,28 @@ export class AppComponent implements OnInit, OnDestroy {
         const data = response.body;
         console.log(data);
         this.generalSummary = data.generalSummary;
-        this.briefSummaries$ = of(data.briefSummaries);
-        this.sources$ = of(data.sources);
+
+        let summaryList: any[] = [];
+        for (let i = 0; i < data.sources.length; i++) {
+          let title = data.sources[i].title;
+          let link = data.sources[i].link;
+          let summary = data.sources[i].snippet;
+
+          for (let j = 0; j < data.briefSummaries.length; j++) {
+            if (data.sources[i].title === data.briefSummaries[j].title) {
+              summary = data.briefSummaries[j].summary;
+              break;
+            }
+          }
+
+          summaryList.push({
+            title: title,
+            link: link,
+            summary: summary,
+          });
+          this.summaryList$ = of(summaryList);
+        }
+
         this.showAnswer = true;
         this.loading = false;
         this.showMoreBtn = true;
