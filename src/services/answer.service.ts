@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import {Observable, of, forkJoin, delay} from "rxjs";
+import {Observable, of, forkJoin} from "rxjs";
 import { map, catchError, switchMap } from "rxjs/operators";
 import { SearchService } from "./search.service";
 import { OpenAIService } from "./openAI.service";
@@ -28,7 +28,6 @@ export class AnswerService {
 
         const processedSources$ = sources.map(({ title, link }) =>
             {
-                delay(10000);
                 return this.searchService.fetchPageContent(link).pipe(
                     switchMap((htmlContent) => {
                         console.log(link);

@@ -35,11 +35,17 @@
                                 </mat-card>
                             }
 
-                            @for (item of (sources$ | async); track item) {
+                            @for (source of (sources$ | async); track source) {
                                 <mat-list class="example-list-wrapping">
                                     <mat-list-item>
-                                        <span matListItemTitle><a [href]="item.link" target="_blank">{{ item.title }}</a></span>
-                                        {{ item.snippet }}
+                                        <span matListItemTitle><a [href]="source.link" target="_blank">{{ source.title }}</a></span>
+                                        @for (briefSummary of (briefSummaries$ | async); track briefSummary) {
+                                            @if (source.title === briefSummary.title) {
+                                                {{ briefSummary.summary }}
+                                            } @else {
+                                                {{ source.snippet }}
+                                            }
+                                        }
                                     </mat-list-item>
                                 </mat-list>
                             }
